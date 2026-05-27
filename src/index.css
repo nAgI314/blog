@@ -3,9 +3,16 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --bg: #ffffff;
+  --fg: #213547;
+  --surface: rgba(0, 0, 0, 0.04);
+  --button-bg: #f6f6f6;
+  --button-fg: #111;
+  --border: rgba(0, 0, 0, 0.12);
+
+  color-scheme: light;
+  color: var(--fg);
+  background-color: var(--bg);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -28,6 +35,41 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000;
+  transition: opacity 180ms linear;
+}
+
+[data-lights='off'] body::before {
+  opacity: 1;
+}
+
+[data-lights='off'][data-spot='on'] body::before {
+  /* “光を足す”のではなく、暗幕側を切り抜く */
+  -webkit-mask-image: conic-gradient(
+    from var(--spot-angle, 0deg) at var(--spot-x, 50%) var(--spot-y, 50%),
+    transparent 0deg,
+    transparent var(--spot-width, 55deg),
+    black var(--spot-width, 55deg),
+    black 360deg
+  );
+  mask-image: conic-gradient(
+    from var(--spot-angle, 0deg) at var(--spot-x, 50%) var(--spot-y, 50%),
+    transparent 0deg,
+    transparent var(--spot-width, 55deg),
+    black var(--spot-width, 55deg),
+    black 360deg
+  );
 }
 
 h1 {
@@ -37,12 +79,13 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 1px solid var(--border);
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--button-bg);
+  color: var(--button-fg);
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -52,17 +95,4 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }
