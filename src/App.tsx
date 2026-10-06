@@ -4,6 +4,7 @@ import { About } from './pages/about'
 import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import { Ebi } from './pages/ebi';
 import { ThemeProvider, useTheme } from './theme'
+import { Footer } from './components/Footer';
 
 function Header() {
   const { lightsOff, toggleLights } = useTheme()
@@ -30,6 +31,7 @@ function App() {
               <Route path="/ebi" element={<Ebi />} />
             </Routes>
           </main>
+          <Footer/>
         </div>
       </Router>
     </ThemeProvider>
